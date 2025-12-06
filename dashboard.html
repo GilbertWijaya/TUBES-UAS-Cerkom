@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Monitoring Telur Realtime</title>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #7ab6f5, #d7e9ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: white;
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .glass-card {
+      width: 480px;
+      padding: 25px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .stat-box {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .mini-card {
+      flex: 1;
+      background: rgba(255,255,255,0.55);
+      margin: 0 5px;
+      padding: 15px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .mini-title {
+      font-size: 14px;
+      color: #444;
+    }
+
+    .mini-value {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    #frame {
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transition: 0.3s ease-in-out;
+    }
+
+    #frame:hover {
+      transform: scale(1.02);
+    }
+
+    .counter-big {
+      background: #2b4c7e;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    }
+
+    .material-symbols-rounded {
+      font-size: 28px;
+    }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    .success { background: #27ae60; }
+    .danger  { background: #e74c3c; }
+    .waiting { background: #3498db; }
+  </style>
+</head>
+<body>
+
+  <h1>🎥 Deteksi Telur Realtime</h1>
+
+  <div class="glass-card">
+
+    <div class="counter-big">
+      <span class="material-symbols-rounded">egg</span>
+      Terdeteksi: <span id="count">0</span>
+    </div>
+
+    <div class="stat-box">
+      <div class="mini-card">
+        <div class="mini-title">Status</div>
+        <div id="status" class="badge waiting">Menunggu...</div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-title">Confidence</div>
+        <div id="conf" class="mini-value">0.0</div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-title">Waktu</div>
+        <div id="time" class="mini-value">-</div>
+      </div>
+    </div>
+
+    <img id="frame" src="">
+  </div>
+
+  <!-- <script>
+    const socket = io("http://192.168.0.108:8000", {
+        path: "/socket.io"
+    });
+
+    let totalCount = 0;
+
+    function animateCount(element, newValue) {
+      let current = parseInt(element.innerText);
+      const step = (newValue - current) / 10;
+
+      let i = 0;
+      const interval = setInterval(() => {
+        current += step;
+        element.innerText = Math.floor(current);
+
+        if (i >= 10) {
+          element.innerText = newValue;
+          clearInterval(interval);
+        }
+        i++;
+      }, 30);
+    }
+
+    socket.on("update", data => {
+      const status = document.getElementById("status");
+
+      if (data.detected) {
+        status.className = "badge success";
+        totalCount++;
+        animateCount(document.getElementById("count"), totalCount);
+      } else {
+        status.className = "badge danger";
+      }
+
+      status.innerText = data.label;
+      document.getElementById("conf").innerText = data.confidence;
+      document.getElementById("time").innerText = data.time;
+      document.getElementById("frame").src = data.image;
+    });
+  </script> -->
+  <script>
+    const socket = io("http://192.168.0.103:8000", {
+        path: "/socket.io"
+    });
+
+    let totalCount = 0;
+
+    function animateCount(element, newValue) {
+      let current = parseInt(element.innerText);
+      const step = (newValue - current) / 10;
+
+      let i = 0;
+      const interval = setInterval(() => {
+        current += step;
+        element.innerText = Math.floor(current);
+
+        if (i >= 10) {
+          element.innerText = newValue;
+          clearInterval(interval);
+        }
+        i++;
+      }, 30);
+    }
+
+    socket.on("update", data => {
+      const status = document.getElementById("status");
+
+      if (data.detected) {
+        status.className = "badge success";
+        totalCount++;
+        animateCount(document.getElementById("count"), totalCount);
+      } else {
+        status.className = "badge danger";
+      }
+
+      status.innerText = data.label;
+      document.getElementById("conf").innerText = data.confidence;
+      document.getElementById("time").innerText = data.time;
+      document.getElementById("frame").src = data.image;
+
+      // ==============================
+      // 🚀 Kirim Data ke ESP32 OTOMATIS
+      // ==============================
+      fetch("http://192.168.0.112/data", {   // GANTI dengan IP ESP32 Anda
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          count: totalCount,
+          confidence: data.confidence,
+          detected: data.detected
+        })
+      }).catch(err => console.log("Gagal kirim ke ESP32:", err));
+    });
+  </script>
+
+
+</body>
+</html>
