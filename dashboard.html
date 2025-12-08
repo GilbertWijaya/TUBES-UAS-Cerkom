@@ -139,49 +139,8 @@
     <img id="frame" src="">
   </div>
 
-  <!-- <script>
-    const socket = io("http://192.168.0.108:8000", {
-        path: "/socket.io"
-    });
-
-    let totalCount = 0;
-
-    function animateCount(element, newValue) {
-      let current = parseInt(element.innerText);
-      const step = (newValue - current) / 10;
-
-      let i = 0;
-      const interval = setInterval(() => {
-        current += step;
-        element.innerText = Math.floor(current);
-
-        if (i >= 10) {
-          element.innerText = newValue;
-          clearInterval(interval);
-        }
-        i++;
-      }, 30);
-    }
-
-    socket.on("update", data => {
-      const status = document.getElementById("status");
-
-      if (data.detected) {
-        status.className = "badge success";
-        totalCount++;
-        animateCount(document.getElementById("count"), totalCount);
-      } else {
-        status.className = "badge danger";
-      }
-
-      status.innerText = data.label;
-      document.getElementById("conf").innerText = data.confidence;
-      document.getElementById("time").innerText = data.time;
-      document.getElementById("frame").src = data.image;
-    });
-  </script> -->
   <script>
-    const socket = io("http://192.168.0.103:8000", {
+    const socket = io("http://192.168.166.41:8000", {
         path: "/socket.io"
     });
 
@@ -223,7 +182,7 @@
       // ==============================
       // 🚀 Kirim Data ke ESP32 OTOMATIS
       // ==============================
-      fetch("http://192.168.0.112/data", {   // GANTI dengan IP ESP32 Anda
+      fetch("http://192.168.166.28/data", {   // GANTI dengan IP ESP32 Anda
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

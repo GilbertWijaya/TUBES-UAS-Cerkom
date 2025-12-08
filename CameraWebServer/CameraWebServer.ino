@@ -9,9 +9,9 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char *ssid = "WIJAYA EDWART";
-const char *password = "gorengan28";
-const char* serverUrl = "http://192.168.0.103:8000/upload"; // IP Server FastAPI
+const char *ssid = "Redmi Note 13";
+const char *password = "indomie123";
+const char* serverUrl = "http://192.168.166.41:8000/upload"; // IP Server FastAPI
 
 void startCameraServer();
 void setupLedFlash(int pin);
