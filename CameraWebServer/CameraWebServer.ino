@@ -127,7 +127,7 @@ void loop() {
 
   esp_camera_fb_return(fb);
 
-  delay(2000);
+  delay(150);
 }
 
 
